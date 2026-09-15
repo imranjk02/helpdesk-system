@@ -1,11 +1,18 @@
 from flask import Flask, render_template, request, redirect, session
 import mysql.connector
+import os
 
 app = Flask(__name__)
 app.secret_key = "nettech_secret_key"
 
 def get_db():
-    return mysql.connector.connect(host="localhost", user="root", password="4444", database="helpdesk")
+    return mysql.connector.connect(
+        host=os.environ.get("MYSQL_PUBLIC_HOST"),
+        port=int(os.environ.get("MYSQL_PUBLIC_PORT")),
+        user=os.environ.get("MYSQLUSER"),
+        password=os.environ.get("MYSQLPASSWORD"),
+        database=os.environ.get("MYSQLDATABASE")
+    )
 
 def get_user():
 
